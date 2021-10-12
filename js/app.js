@@ -378,7 +378,6 @@ if (location.hash) {
 //=================
 //Menu
 let iconMenu = document.querySelector(".icon-menu");
-
 if (iconMenu != null) {
 	let delay = 500;
 	let menuBody = document.querySelector(".menu__body");
@@ -389,7 +388,6 @@ if (iconMenu != null) {
 			menuBody.classList.toggle("_active");
 		}
 	});
-
 };
 function menu_close() {
 	let iconMenu = document.querySelector(".icon-menu");
@@ -397,31 +395,6 @@ function menu_close() {
 	iconMenu.classList.remove("_active");
 	menuBody.classList.remove("_active");
 }
-let iconLink = document.querySelector(".menu__item");
-let iconLink2 = document.querySelector(".menu__item2");
-let iconLink3 = document.querySelector(".menu__item3");
-let menuBody = document.querySelector(".menu__body");
-iconLink.addEventListener("click", function (e) {
-	if (".menu__body._active") {
-		iconMenu.classList.remove("_active");
-		menuBody.classList.remove("_active");
-		body_lock_remove()
-	}
-});
-iconLink2.addEventListener("click", function (e) {
-	if (".menu__body._active") {
-		iconMenu.classList.remove("_active");
-		menuBody.classList.remove("_active");
-		body_lock_remove()
-	}
-});
-iconLink3.addEventListener("click", function (e) {
-	if (".menu__body._active") {
-		iconMenu.classList.remove("_active");
-		menuBody.classList.remove("_active");
-		body_lock_remove()
-	}
-});
 //=================
 //BodyLock
 function body_lock(delay) {
@@ -1130,6 +1103,25 @@ animate({
 	}
 })();
 
+const anchors = document.querySelectorAll('a[href*="#"]');
+
+for (let anchor of anchors) {
+	anchor.addEventListener("click", function (event) {
+		event.preventDefault();
+
+		const blockId = anchor.getAttribute('href')
+		document.querySelector('' +  blockId).scrollIntoView({
+			behavior: "smooth",
+			block: "start"
+		});
+		if ('.menu__body ._active') {
+			menu_close();
+			body_lock_remove(500);
+		}
+	})
+}
+
+
 window.onload = function () {
 	document.addEventListener("click", documentActions);
 
@@ -1275,9 +1267,9 @@ window.onload = function () {
 			let productTemplateActions = `
 		<div class="item-product__actions actions-product">
 			<div class="actions-product__body">
-				<a href="" class="actions-product__button btn btn_white">Добавить в корзину</a>
+				<a href="" class="actions-product__button btn btn_white">В корзину</a>
 				<a href="${productShareUrl}" class="actions-product__link _icon-share">Share</a>
-				<a href="${productLikeUrl}" class="actions-product__link _icon-favorite">Класс!</a>
+				<a href="${productLikeUrl}" class="actions-product__link _icon-favorite">Like</a>
 			</div>
 		</div>
 	`;
@@ -1374,8 +1366,8 @@ window.onload = function () {
 			<a href="" class="cart-list__image _ibg">${cartProductImage}</a>
 			<div class="cart-list__body">
 				<a href="" class="cart-list__title">${cartProductTitle}</a>
-				<div class="cart-list__quantity">Количество: <span>1</span></div>
-				<a href="" class="cart-list__delete">Удалить</a>
+				<div class="cart-list__quantity">Quantity: <span>1</span></div>
+				<a href="" class="cart-list__delete">Delete</a>
 			</div>`;
 				cartList.insertAdjacentHTML('beforeend', `<li data-cart-pid="${productId}" class="cart-list__item">${cartProductContent}</li>`);
 			} else {
@@ -1976,17 +1968,3 @@ if (priceSlider) {
 		priceSlider.noUiSlider.set([priceStartValue, priceEndValue]);
 	}
 }
-
-const anchors = document.querySelectorAll('a[href*="#"]');
-
-for (let anchor of anchors) {
-	anchor.addEventListener("click", function (event) {
-		event.preventDefault();
-		const blockId = anchor.getAttribute('href')
-		document.querySelector('' +  blockId).scrollIntoView({
-			behavior: "smooth",
-			block: "start"
-		})
-	})
-}
-
